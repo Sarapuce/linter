@@ -1,0 +1,24 @@
+name: Documentation linter
+description: "Check some simple typo that can be present in documentation"
+inputs:
+  file:
+    description: "File to check"
+    required: true
+    default: "README.md"
+
+
+runs:
+  using: "composite"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Remove Double Space
+        run: |
+          FILE_TO_CHECK=${{ inputs.file }}
+          if [ -f "$FILE_TO_CHECK" ]; then
+            sed -i 's/  / /g' "$FILE_TO_CHECK"
+          else
+            echo "File not found: $FILE_TO_CHECK"
+            exit 1
+          fi
